@@ -33,10 +33,11 @@ public class StaffResource {
 
     @GET
     @Path("/paginated")
-    public StaffResponse paginatedStaffList() {
-        List<Link> links = LinkService.getLinks("/staff?page=2&limit=20", "next");
-        Uni<List<Staff>> staff = (Uni<List<Staff>>) staffService.getStaffResponse();
-        return new StaffResponse(links, staff);
+    public Uni<StaffResponse> paginatedStaffList() {
+        final Uni<List<Link>> links =
+                Uni.createFrom().item(LinkService.getLinks("/staff?page=2&limit=20", "next"));
+        Uni<List<Staff>> staff = staffService.getStaffResponse();
+        return staff.and(links).map(it -> new StaffResponse(it.getItem2(), it.getItem1()));
     }
 
 }

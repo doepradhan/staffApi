@@ -3,6 +3,7 @@ package org.acme.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.smallrye.mutiny.Uni;
 import org.acme.model.Link;
 
 public class LinkService {

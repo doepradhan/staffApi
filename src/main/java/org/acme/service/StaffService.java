@@ -15,9 +15,6 @@ import java.util.List;
 @ApplicationScoped
 public class StaffService {
 
-    @Inject 
-    ReactiveMongoClient mongoClient;
-
     public Uni<List<Staff>> getStaffResponse(){
         return getCollection().find()
                 .map(document -> {
@@ -28,8 +25,11 @@ public class StaffService {
                 }).collectItems().asList();
     }
 
+    @Inject
+    ReactiveMongoClient mongoClient;
+
     private ReactiveMongoCollection<Document> getCollection() {
         return mongoClient.getDatabase("staff").getCollection("kafka_staff");
     }
-   
+
 }
